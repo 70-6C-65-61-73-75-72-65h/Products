@@ -1,0 +1,113 @@
+.formControl {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &.error input,
+  &.error textarea {
+    border: solid red 0.2vh;
+  }
+
+  & span {
+    text-align: center;
+    display: block;
+    position: relative;
+    z-index: 3;
+    // top: 40%;
+    left: 0%;
+    color: red;
+    // background: linear-gradient(
+    //   45deg,
+    //   rgb(8, 8, 72) 80%,
+    //   rgb(11, 11, 132) 90%,
+    //   rgb(10, 10, 171) 95%
+    // );
+
+    visibility: hidden;
+  }
+
+  &.error span {
+    visibility: visible;
+  }
+
+  &.warning input,
+  &.warning textarea {
+    border: solid rgb(121, 121, 0) 0.2vh;
+  }
+}
+
+// all .redux_form wil have now grid-area: form;  and grid
+.redux_form {
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  grid-area: redux_form;
+
+  input,
+  textarea {
+    min-width: 30vw;
+    width: 90%;
+    border-radius: 2vh 5vh 5vh 2vh;
+    font-size: 2vh;
+    margin-right: 2vw;
+  }
+
+  h3 {
+    text-align: center;
+  }
+}
+
+.formButtons {
+  grid-area: formButtons;
+  button {
+    font-size: 2vh;
+  }
+}
+
+// make like pop up?
+.formSummaryError {
+  grid-area: formSummaryError;
+  border: solid red 0.2vh;
+  padding: 0.5vh;
+  width: 30vw;
+}
+
+// .imageForm {
+//   & > * {
+//     border: 2px solid black;
+//   }
+// }
+.header {
+  font-weight: bold;
+}
+
+.wholeForm {
+  border: 2px solid black;
+  border-radius: 10px;
+  position: relative;
+  width: 40vw;
+  // left: calc(50% - 20vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  & > * {
+    padding-top: 10px;
+  }
+  padding-bottom: 10px;
+}
+
+.operationContainer {
+  padding-bottom: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  & > .operationHeader {
+    color: blue;
+  }
+}

@@ -1,0 +1,30 @@
+.nav {
+  /* display: grid; */
+  grid-area: n;
+  background: linear-gradient(
+    45deg,
+    rgb(8, 8, 72) 80%,
+    rgb(11, 11, 132) 90%,
+    rgb(10, 10, 171) 95%
+  );
+  padding: 2vw;
+
+  grid-template-areas: "nav_item";
+  grid-template-rows: repeat(auto-fit, 1fr);
+}
+
+.item {
+  display: grid;
+  grid-area: nav_item;
+  // font-size: 2vh;
+}
+
+.item > a {
+  //  color: white;
+  text-decoration: none;
+  color: white;
+}
+
+.item > a.activeLink {
+  color: rgb(226, 194, 9);
+}
