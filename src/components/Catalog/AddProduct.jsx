@@ -25,6 +25,7 @@ import withAuthRedirect from "../HOCS/withAuthRedirect";
 import { compose } from "redux";
 
 import productStyles from "./Product.module.scss";
+import { getCurrentDate } from "../../utils/utils";
 
 // can show the summary error
 // form-level validation
@@ -38,17 +39,7 @@ const addProductForm = (props) => {
     // productLink,
   } = props;
 
-  const currentDate = new Date();
-  const minDate = `${currentDate.getYear() + 1900}-${
-    currentDate.getMonth() + 1 < 10
-      ? "0" + currentDate.getMonth() + 1
-      : currentDate.getMonth() + 1
-  }-${
-    currentDate.getDate() < 10
-      ? "0" + currentDate.getDate()
-      : currentDate.getDate()
-  }`;
-
+  const minDate = getCurrentDate();
   return (
     <form onSubmit={handleSubmit} className={styles.wholeForm}>
       <div className={productStyles.fieldDescr}>Наименование</div>
@@ -115,7 +106,7 @@ const AddProduct = ({ isFetching, ...props }) => {
 
   const colorAdded = {
     [true]: "red",
-    [false]: "blue",
+    [false]: "rebeccapurple",
   };
   const showAddingText = {
     [true]: "Товар успешно создан!",

@@ -6,6 +6,7 @@ const Product = ({
   productKey,
   name,
   price,
+  description,
   discount,
   discountEndTime,
   photo,
@@ -32,7 +33,8 @@ const Product = ({
   if (isFetching) return <Preloader />;
   return (
     <div className={styles.productContainer}>
-      <div>Товар: {name}</div>
+      <h3 className={styles.productHeader}> {name}</h3>
+      <div> Описание: {description || "..."}</div>
       <div>Цена: {calcPrice()} $</div>
       <div className={styles.imgSmallContainer}>
         <img src={photo} alt={"Фото товара"} />
@@ -40,16 +42,18 @@ const Product = ({
       {discount && <div className={styles.discount}>Скидка: {discount} %</div>}
       {discountEndTime && (
         <div className={styles.discount}>
-          До конца акции осталось: {calcDET(discountEndTime)}
+          До конца акции: {calcDET(discountEndTime)}
         </div>
       )}
-      <div>
-        <NavLink to={"/catalog/" + productKey}>Редактировать</NavLink>
-      </div>
-      <div>
-        <NavLink to={"/catalog/"} onClick={() => deleteProduct(productKey)}>
-          Удалить
-        </NavLink>
+      <div className={styles.operationBlock}>
+        <div>
+          <NavLink to={"/catalog/" + productKey}>Редактировать</NavLink>
+        </div>
+        <div>
+          <NavLink to={"/catalog/"} onClick={() => deleteProduct(productKey)}>
+            Удалить
+          </NavLink>
+        </div>
       </div>
     </div>
   );

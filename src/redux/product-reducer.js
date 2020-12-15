@@ -284,13 +284,14 @@ export const updateProduct = (productKey, newData) => async (
   dispatch(toggleIsFetching(true));
   try {
     let photo, localPhoto;
-    if (newData.photo) {
+    if (newData.newPhoto) {
       [photo, localPhoto] = await loadImage(newData.photo);
+      newData.newPhoto = void 0;
+      newData.photo = photo;
+      newData.photo = localPhoto;
     }
     await ProductDataService.update(productKey, {
       ...newData,
-      photo: photo, // data or void 0
-      localPhoto: localPhoto, // data or void 0
     });
     dispatch(uProduct(productKey, newData));
   } catch (err) {

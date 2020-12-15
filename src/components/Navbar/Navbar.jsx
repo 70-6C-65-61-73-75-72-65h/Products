@@ -11,19 +11,19 @@ const Navbar = () => {
         </NavLink>
       </div>
 
-      <div className={`${s.item} ${s.active}`}>
+      <div className={`${s.item} `}>
         <NavLink to="/add_product" activeClassName={s.activeLink}>
           Добавить товар
         </NavLink>
       </div>
 
-      <div className={`${s.item} ${s.active}`}>
+      <div className={`${s.item}  `}>
         <NavLink to="/signin" activeClassName={s.activeLink}>
           Войти
         </NavLink>
       </div>
 
-      <div className={`${s.item} ${s.active}`}>
+      <div className={`${s.item} `}>
         <NavLink to="/signup" activeClassName={s.activeLink}>
           Зарегестрироватся
         </NavLink>

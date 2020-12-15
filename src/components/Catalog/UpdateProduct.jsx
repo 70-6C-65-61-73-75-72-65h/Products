@@ -1,8 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { reduxForm } from "redux-form";
-import { Input, createField, ImageField } from "../FormsControls/FormsControls";
 import {
-  requiredField,
+  Input,
+  createField,
+  ImageField,
+  TextArea,
+} from "../FormsControls/FormsControls";
+import {
   acceptableName,
   maxLength200,
   acceptablePrice,
@@ -21,6 +25,7 @@ import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import Preloader from "../Preloader/Preloader";
 import withAuthRedirect from "../HOCS/withAuthRedirect";
+import { getCurrentDate } from "../../utils/utils";
 
 // can show the summary error
 // form-level validation
@@ -31,20 +36,28 @@ const UpdateProductForm = (props) => {
       {}
     )
   );
-  const {
-    handleSubmit,
-    pristine,
-    reset,
-    submitting,
-    error,
-    product,
-    // loadedProductPhoto,
-  } = props;
+  const { handleSubmit, pristine, reset, submitting, error, product } = props;
 
   const activate = (id) => {
-    // if(!id in productState) props.product[id] = '...'
     setPS({ ...productState, [id]: true });
   };
+
+  // if new data were passed -> it will become as input fields
+  const [setled, setSetled] = useState({});
+
+  const setNewProductR = useRef({});
+  function deactivate(id) {
+    if (
+      setNewProductR.current &&
+      setNewProductR.current.value !== void 0 &&
+      setNewProductR.current.value !== ""
+    ) {
+      setSetled((dict) => ({ ...dict, [id]: true }));
+      setNewProductR.current = void 0;
+    } else {
+      setPS({ ...productState, [id]: false });
+    }
+  }
 
   const namelabel = "Наименование товара";
   const photolabelOld = "Текущее фото товара";
@@ -53,31 +66,76 @@ const UpdateProductForm = (props) => {
   const pricelabel = "Цена товара";
   const disclabel = "Скидка";
   const discountEndTimeabel = "Дата окончания акции";
+
+  const fieldsNames = {
+    name: "name",
+    photo: "photo",
+    description: "description",
+    price: "price",
+    discount: "discount",
+    discountEndTime: "discountEndTime",
+  };
+
+  const generOwnProps = (fieldsName) => ({
+    onBlur: () => {
+      !setled[fieldsName] && deactivate(fieldsName);
+    },
+    onFocus: () => {
+      activate(fieldsName);
+    },
+    autoFocus: true,
+    refa: setNewProductR,
+  });
+
+  // create all fields except photo
+  const createProductField = (
+    fieldName,
+    label,
+    component,
+    validators = [],
+    innerProps = {},
+    specialField // date field or photo upload field
+  ) => (
+    <>
+      <div className={productStyles.fieldDescr}>{label}</div>
+      {specialField || productState[fieldName] ? (
+        createField(
+          `${product[fieldName] || "..."}`,
+          fieldName,
+          component,
+          validators,
+          {
+            ...innerProps,
+            ...generOwnProps(fieldName),
+          }
+        )
+      ) : (
+        <div id={fieldName} onClick={() => activate(fieldName)}>
+          {product[fieldName] || "..."}
+        </div>
+      )}
+    </>
+  );
+
+  const minDate = getCurrentDate();
   return (
     <form onSubmit={handleSubmit} className={styles.wholeForm}>
       {/* key, name, price, discount, discountEndTime, photo */}
-      <div className={productStyles.fieldDescr}>{namelabel}</div>
-      {productState["name"] ? (
-        createField(`${product.name}`, "name", Input, [
-          requiredField,
-          acceptableName,
-        ])
-      ) : (
-        <div id="name" onDoubleClick={() => activate("name")}>
-          {product.name}
-        </div>
-      )}
+
+      {createProductField(fieldsNames.name, namelabel, TextArea, [
+        acceptableName,
+      ])}
+
       <div className={productStyles.fieldDescr}>{photolabelOld}</div>
       <div className={productStyles.imgMiddleContainer}>
         <img src={product.photo} alt="Data" />
       </div>
 
-      <div className={productStyles.fieldDescr}>{photolabel}</div>
-      {createField(
-        "Загрузите фото ...",
-        "photo",
+      {createProductField(
+        fieldsNames.photo,
+        photolabel,
         ImageField,
-        [requiredField, imageFormat, imageWidth_200_4000, imageHeight_200_4000],
+        [imageFormat, imageWidth_200_4000, imageHeight_200_4000],
         {
           mimeType: "image/jpeg, image/png",
           maxWidth: 4000,
@@ -85,54 +143,25 @@ const UpdateProductForm = (props) => {
           minWidth: 200,
           maxHeight: 4000,
           alt: "Фото товара",
-        }
+        },
+        true
       )}
-
-      <div className={productStyles.fieldDescr}>{desclabel}</div>
-      {productState["description"] ? (
-        createField(`${product.description || "..."}`, "description", Input, [
-          maxLength200,
-        ])
-      ) : (
-        <div onDoubleClick={() => activate("description")}>
-          {product.description || "..."}
-        </div>
-      )}
-
-      <div className={productStyles.fieldDescr}>{pricelabel}</div>
-      {productState["price"] ? (
-        createField(`${product.price}`, "price", Input, [
-          requiredField,
-          acceptablePrice,
-        ])
-      ) : (
-        <div onDoubleClick={() => activate("price")}>{product.price}</div>
-      )}
-
-      <div className={productStyles.fieldDescr}>{disclabel}</div>
-      {productState["discount"] ? (
-        createField(`${product.discount || "..."}`, "discount", Input, [
-          requiredField,
-          acceptableDiscount,
-        ])
-      ) : (
-        <div onDoubleClick={() => activate("discount")}>
-          {product.discount || "..."}
-        </div>
-      )}
-
-      <div className={productStyles.fieldDescr}>{discountEndTimeabel}</div>
-      {productState["discountEndTime"] ? (
-        createField(
-          `${product.discountEndTime || "..."}`,
-          "discountEndTime",
-          Input,
-          [requiredField, acceptableDiscountEndDate]
-        )
-      ) : (
-        <div onDoubleClick={() => activate("discountEndTime")}>
-          {product.discountEndTime || "..."}
-        </div>
+      {createProductField(fieldsNames.description, desclabel, TextArea, [
+        maxLength200,
+      ])}
+      {createProductField(fieldsNames.price, pricelabel, Input, [
+        acceptablePrice,
+      ])}
+      {createProductField(fieldsNames.discount, disclabel, Input, [
+        acceptableDiscount,
+      ])}
+      {createProductField(
+        fieldsNames.discountEndTime,
+        discountEndTimeabel,
+        Input,
+        [acceptableDiscountEndDate],
+        { type: "date", min: minDate, value: minDate },
+        true
       )}
       {error && <div className={styles.formSummaryError}>{error}</div>}
       <div className="">
@@ -163,7 +192,6 @@ const UpdateProduct = ({
 }) => {
   const [hasCP, setCP] = useState(false);
 
-  //  да тут много не DRY-я,  я просто не успел вынести в кастомные хуки(
   const refUpdated = useRef();
 
   useEffect(() => {
@@ -173,7 +201,15 @@ const UpdateProduct = ({
   }, [isFetching]);
 
   const onSubmit = async (formData) => {
+    if (formData.discountEndTime) {
+      formData.discountEndTime = Date.parse(formData.discountEndTime);
+    }
+
+    if (formData.photo) {
+      formData = { ...formData, newPhoto: true };
+    }
     let newProd = { ...currentProduct, ...formData };
+
     console.log(currentProduct);
     await updateProduct(currentProduct.key, newProd);
     refUpdated.current = true;
@@ -209,7 +245,6 @@ const UpdateProduct = ({
 const mapStateToProps = (state) => ({
   isFetching: state.products.isFetching,
   currentProduct: state.products.selectedProduct,
-  // productPhotoUrl: state.products.prod
 });
 
 export default compose(

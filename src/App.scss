@@ -61,3 +61,22 @@
   border-radius: 20px;
   position: absolute;
 } */
+
+a {
+  text-decoration: none;
+  &:visited {
+    color: rgb(60, 193, 115);
+  }
+  &:active {
+    color: rgb(255, 0, 98);
+  }
+  &:hover {
+    color: rgb(31, 8, 61);
+    font-weight: 700;
+    font-style: italic;
+  }
+}
+
+.app-wrapper-content {
+  background-image: url("./assets/images/bg3.jpg");
+}

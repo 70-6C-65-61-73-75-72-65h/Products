@@ -9,22 +9,14 @@
   );
   padding: 2vw;
 
-  grid-template-areas: "nav_item";
-  grid-template-rows: repeat(auto-fit, 1fr);
-}
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
 
-.item {
-  display: grid;
-  grid-area: nav_item;
-  // font-size: 2vh;
-}
-
-.item > a {
-  //  color: white;
-  text-decoration: none;
-  color: white;
-}
-
-.item > a.activeLink {
-  color: rgb(226, 194, 9);
+  .item > a {
+    color: white;
+    &.activeLink {
+      color: rgb(226, 194, 9);
+    }
+  }
 }

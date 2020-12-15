@@ -67,6 +67,7 @@ const CatalogContainer = ({
             key={product.key}
             productKey={product.key}
             name={product.name}
+            description={product.description}
             price={product.price}
             discount={product.discount}
             discountEndTime={product.discountEndTime}

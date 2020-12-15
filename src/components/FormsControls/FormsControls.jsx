@@ -33,28 +33,34 @@ const FormControl = ({
 
 export const TextArea = (props) => {
   const { input, meta, child, ...restProps } = props;
-  console.log(restProps.onCTRLEnt);
+  // console.log(restProps.onCTRLEnt);
   return (
     <FormControl {...props}>
-      <textarea {...input} {...restProps} onKeyUp={restProps.onCTRLEnt} />
+      <textarea
+        {...input}
+        {...restProps}
+        // onKeyUp={restProps.onCTRLEnt}
+        ref={props.refa}
+      />
     </FormControl>
   );
 };
 
-export const Input = (props) => {
+export function Input(props) {
   const { input, meta, child, ...restProps } = props;
   return (
     <FormControl {...props}>
-      <input {...input} {...restProps} />
+      <input {...input} {...restProps} ref={props.refa} />
     </FormControl>
   );
-};
+}
 
 export const createField = (
   placeholder,
   name,
   component,
   validators,
+  // specFuncObj, // {functionName: function} // {onBlur: function}
   props = {},
   text = ""
 ) => {

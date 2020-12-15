@@ -22,6 +22,7 @@ export const acceptableName = (value) => {
 export const maxLength200 = maxLength(200);
 //   цена
 export const acceptablePrice = (value) => {
+  if (value === void 0) return void 0;
   let val = +value;
   if (val.toFixed(2) == val) {
     const [min, max] = [0.0, 99999999.99];
