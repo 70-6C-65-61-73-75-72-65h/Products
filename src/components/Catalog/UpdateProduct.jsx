@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { reduxForm } from "redux-form";
-import { Input, createField } from "../FormsControls/FormsControls";
+import { Input, createField, ImageField } from "../FormsControls/FormsControls";
 import {
   requiredField,
   acceptableName,
@@ -9,10 +9,12 @@ import {
   acceptableDiscount,
   acceptableDiscountEndDate,
   validate,
+  imageFormat,
+  imageWidth_200_4000,
+  imageHeight_200_4000,
 } from "../FormsControls/validators";
 import { connect } from "react-redux";
 import { getProduct, updateProduct } from "../../redux/product-reducer";
-// import { Redirect } from "react-router-dom";
 import styles from "../FormsControls/FormsControls.module.scss";
 import productStyles from "./Product.module.scss";
 import { withRouter } from "react-router-dom";
@@ -44,16 +46,17 @@ const UpdateProductForm = (props) => {
     setPS({ ...productState, [id]: true });
   };
 
-  const namelabel = "Наименование продукта";
-  const photolabel = "Фото продукта";
-  const desclabel = "Описание продукта";
-  const pricelabel = "Цена продукта";
+  const namelabel = "Наименование товара";
+  const photolabelOld = "Текущее фото товара";
+  const photolabel = "Новое фото товара";
+  const desclabel = "Описание товара";
+  const pricelabel = "Цена товара";
   const disclabel = "Скидка";
   const discountEndTimeabel = "Дата окончания акции";
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.wholeForm}>
       {/* key, name, price, discount, discountEndTime, photo */}
-      <div>{namelabel}</div>
+      <div className={productStyles.fieldDescr}>{namelabel}</div>
       {productState["name"] ? (
         createField(`${product.name}`, "name", Input, [
           requiredField,
@@ -64,18 +67,28 @@ const UpdateProductForm = (props) => {
           {product.name}
         </div>
       )}
+      <div className={productStyles.fieldDescr}>{photolabelOld}</div>
       <div className={productStyles.imgMiddleContainer}>
         <img src={product.photo} alt="Data" />
       </div>
 
-      <div>{photolabel}</div>
-      {productState["photo"] ? (
-        createField(`${product.photo}`, "photo", Input, [requiredField])
-      ) : (
-        <div onDoubleClick={() => activate("photo")}>{product.photo}</div>
+      <div className={productStyles.fieldDescr}>{photolabel}</div>
+      {createField(
+        "Загрузите фото ...",
+        "photo",
+        ImageField,
+        [requiredField, imageFormat, imageWidth_200_4000, imageHeight_200_4000],
+        {
+          mimeType: "image/jpeg, image/png",
+          maxWidth: 4000,
+          minHeight: 200,
+          minWidth: 200,
+          maxHeight: 4000,
+          alt: "Фото товара",
+        }
       )}
 
-      <div>{desclabel}</div>
+      <div className={productStyles.fieldDescr}>{desclabel}</div>
       {productState["description"] ? (
         createField(`${product.description || "..."}`, "description", Input, [
           maxLength200,
@@ -86,7 +99,7 @@ const UpdateProductForm = (props) => {
         </div>
       )}
 
-      <div>{pricelabel}</div>
+      <div className={productStyles.fieldDescr}>{pricelabel}</div>
       {productState["price"] ? (
         createField(`${product.price}`, "price", Input, [
           requiredField,
@@ -96,7 +109,7 @@ const UpdateProductForm = (props) => {
         <div onDoubleClick={() => activate("price")}>{product.price}</div>
       )}
 
-      <div>{disclabel}</div>
+      <div className={productStyles.fieldDescr}>{disclabel}</div>
       {productState["discount"] ? (
         createField(`${product.discount || "..."}`, "discount", Input, [
           requiredField,
@@ -108,7 +121,7 @@ const UpdateProductForm = (props) => {
         </div>
       )}
 
-      <div>{discountEndTimeabel}</div>
+      <div className={productStyles.fieldDescr}>{discountEndTimeabel}</div>
       {productState["discountEndTime"] ? (
         createField(
           `${product.discountEndTime || "..."}`,
@@ -150,10 +163,20 @@ const UpdateProduct = ({
 }) => {
   const [hasCP, setCP] = useState(false);
 
-  const onSubmit = (formData) => {
+  //  да тут много не DRY-я,  я просто не успел вынести в кастомные хуки(
+  const refUpdated = useRef();
+
+  useEffect(() => {
+    if (refUpdated.current) {
+      props.history.push("/catalog");
+    }
+  }, [isFetching]);
+
+  const onSubmit = async (formData) => {
     let newProd = { ...currentProduct, ...formData };
     console.log(currentProduct);
-    updateProduct(currentProduct.key, newProd);
+    await updateProduct(currentProduct.key, newProd);
+    refUpdated.current = true;
   };
 
   useEffect(() => {
@@ -175,8 +198,8 @@ const UpdateProduct = ({
   if (!hasCP) return <Preloader />;
   return (
     <>
-      <div className="">
-        <h1>updateProduct</h1>
+      <div className={productStyles.productOperationContainer}>
+        <h1 className={productStyles.productOperationHeader}>Обновить товар</h1>
         <UpdateProductReduxForm onSubmit={onSubmit} product={currentProduct} />
       </div>
     </>

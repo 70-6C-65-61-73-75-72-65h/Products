@@ -126,12 +126,12 @@ export const selectProduct = (product) => ({
 //   };
 // };
 
-export const setLoadedImageLink = (link) => ({
-  type: SET_LOADED_IMAGE_LINK,
-  link,
-});
+// export const setLoadedImageLink = (link) => ({
+//   type: SET_LOADED_IMAGE_LINK,
+//   link,
+// });
 
-export const loadImage = (file) => async (dispatch) => {
+export const loadImage = async (file) => {
   let imageExists = await ProductDataService.isFileExists(file.name);
   let fileName = file.name;
 
@@ -140,11 +140,16 @@ export const loadImage = (file) => async (dispatch) => {
     fileName = `${timestamp}-${fileName}`;
   }
   console.log(fileName);
-  await Promise.all([ProductDataService.loadFile(file, fileName)]).then(
-    (link) => {
-      dispatch(setLoadedImageLink(link[0]));
-    }
-  );
+  let link = await Promise.all([ProductDataService.loadFile(file, fileName)]);
+  console.log("loadImage /// link");
+  console.log(link);
+  return link[0];
+  // await Promise.all([ProductDataService.loadFile(file, fileName)]).then(
+  //   (link) => {
+  //     // dispatch(setLoadedImageLink(link[0]));
+  //     resolve(link[0]);
+  //   }
+  // );
 };
 
 export const getProducts = () => async (dispatch) => {
@@ -244,8 +249,6 @@ export const getProduct = (productKey) => async (dispatch) => {
       dispatch(selectProduct({ ...snap.val(), key: productKey }));
       dispatch(toggleIsFetching(false));
     });
-
-    // await Promise.all([])
   } catch (err) {
     console.log(err.message);
     console.log(err.code);
@@ -258,12 +261,13 @@ export const addProduct = (product) => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   try {
     // result to get product key ????
-    let res = await ProductDataService.create(product);
-    console.log(res);
-    dispatch(setLoadedImageLink(null));
+    const [photo, localPhoto] = await loadImage(product.photo);
+    await ProductDataService.create({
+      ...product,
+      photo: photo,
+      localPhoto: localPhoto,
+    });
     dispatch(reset("addProduct"));
-    // dispatch(reset("imageForm"));
-    // console.log("here2");
   } catch (err) {
     console.log(err.message);
     console.log(err.code);
@@ -279,8 +283,15 @@ export const updateProduct = (productKey, newData) => async (
 ) => {
   dispatch(toggleIsFetching(true));
   try {
-    console.log("productKey" + productKey);
-    await ProductDataService.update(productKey, newData);
+    let photo, localPhoto;
+    if (newData.photo) {
+      [photo, localPhoto] = await loadImage(newData.photo);
+    }
+    await ProductDataService.update(productKey, {
+      ...newData,
+      photo: photo, // data or void 0
+      localPhoto: localPhoto, // data or void 0
+    });
     dispatch(uProduct(productKey, newData));
   } catch (err) {
     console.log(err.message);

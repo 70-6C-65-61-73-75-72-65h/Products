@@ -3,8 +3,8 @@ import { reduxForm } from "redux-form";
 import {
   Input,
   createField,
-  ImageField,
-  TextArea,
+  ImageForm,
+  HollowInput,
 } from "../FormsControls/FormsControls";
 import {
   requiredField,
@@ -14,9 +14,6 @@ import {
   acceptableDiscount,
   acceptableDiscountEndDate,
   validate,
-  imageFormat,
-  imageHeight_200_4000,
-  imageWidth_200_4000,
 } from "../FormsControls/validators";
 import { connect } from "react-redux";
 import { addProduct, loadImage } from "../../redux/product-reducer";
@@ -35,7 +32,7 @@ const addProductForm = (props) => {
     reset,
     submitting,
     error,
-    // productLink,
+    productLink,
   } = props;
 
   const currentDate = new Date();
@@ -51,15 +48,15 @@ const addProductForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.wholeForm}>
-      <div className={productStyles.fieldDescr}>Наименование</div>
-      {createField("Наименование товара", "name", TextArea, [
+      <div className={productStyles.fieldDescr}>Имя продукта</div>
+      {createField("Наименование продукта", "name", Input, [
         requiredField,
         acceptableName,
       ])}
-      <div className={productStyles.fieldDescr}>Описание товара</div>
-      {createField("Описание товара", "description", TextArea, [maxLength200])}
-      <div className={productStyles.fieldDescr}>Цена товара</div>
-      {createField("Цена товара", "price", Input, [
+      <div className={productStyles.fieldDescr}>Описание продукта</div>
+      {createField("Описание продукта", "description", Input, [maxLength200])}
+      <div className={productStyles.fieldDescr}>Цена продукта</div>
+      {createField("Цена продукта", "price", Input, [
         requiredField,
         acceptablePrice,
       ])}
@@ -74,20 +71,10 @@ const addProductForm = (props) => {
         { type: "date", min: minDate, value: minDate }
       )}
 
-      {createField(
-        "Загрузите фото ...",
-        "photo",
-        ImageField,
-        [requiredField, imageFormat, imageWidth_200_4000, imageHeight_200_4000],
-        {
-          mimeType: "image/jpeg, image/png",
-          maxWidth: 4000,
-          minHeight: 200,
-          minWidth: 200,
-          maxHeight: 4000,
-          alt: "Фото товара",
-        }
-      )}
+      {!productLink &&
+        createField("Загрузите Фото ...", "photo", HollowInput, [
+          requiredField,
+        ])}
 
       {error && <div className={styles.formSummaryError}>{error}</div>}
       <div className="">
@@ -109,65 +96,58 @@ const AddProductReduxForm = reduxForm({
   validate,
 })(addProductForm);
 
-const AddProduct = ({ isFetching, ...props }) => {
+const AddProduct = ({ submittedImageLink, ...props }) => {
   const [added, setAdded] = useState(false);
   const refAdded = useRef();
 
-  const colorAdded = {
-    [true]: "red",
-    [false]: "blue",
-  };
-  const showAddingText = {
-    [true]: "Товар успешно создан!",
-    [false]: "Товар в процессе создания...",
-  };
-  const [currentCA, setCCA] = useState(true); // change color while create products
-
   useEffect(() => {
     if (!added) {
-      if (refAdded.current) {
+      if (!refAdded.current) {
+        refAdded.current = { first: true };
+      } else if (refAdded.current.first && Array.isArray(submittedImageLink)) {
+        refAdded.current = { second: true };
+      } else if (refAdded.current.second && !submittedImageLink) {
         setAdded(true);
-        setCCA((last) => !last); // change color key
       }
-    } else {
-      setCCA((last) => !last);
     }
-    // if product fetching changed -> addProduct method started or ended ->
-    // should run effect to check addProduct state -> if addProduct ended ->
-    // product added -> else -> submit denied because of request denied
-  }, [added, setAdded, isFetching]);
+  }, [added, setAdded, refAdded, submittedImageLink]);
 
-  const onSubmit = async (formData) => {
+  const onSubmit = (formData) => {
     if (formData.discountEndTime) {
+      // console.log(formData); // to timestamp
       formData.discountEndTime = Date.parse(formData.discountEndTime);
     }
-
-    await props.addProduct({
+    props.addProduct({
       ...formData,
+      photo: submittedImageLink[0],
+      localPhoto: submittedImageLink[1],
     });
-    refAdded.current = true;
-    console.log("refAdded.current");
-    console.log(refAdded.current);
+  };
+
+  const onSubmitImage = (formData) => {
+    console.log(formData);
+    props.loadImage(formData.image);
   };
 
   return (
     <>
       <div className={productStyles.productOperationContainer}>
         <h1 className={productStyles.productOperationHeader}>Новый товар</h1>
-        <div
-          className={productStyles.productAdded}
-          style={added ? { color: colorAdded[currentCA] } : {}}
-        >
-          {added && showAddingText[currentCA]}
+        <div className={productStyles.productAdded}>
+          {added && "Товар успешно создан "}
         </div>
-        <AddProductReduxForm onSubmit={onSubmit} />
+        <ImageForm onSubmit={onSubmitImage} />
+        <AddProductReduxForm
+          onSubmit={onSubmit}
+          productLink={submittedImageLink}
+        />
       </div>
     </>
   );
 };
 
 const mapStateToProps = (state) => ({
-  isFetching: state.products.isFetching,
+  submittedImageLink: state.products.loadedImageLink,
 });
 
 export default compose(

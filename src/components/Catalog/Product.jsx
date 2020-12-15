@@ -35,7 +35,7 @@ const Product = ({
       <div>Товар: {name}</div>
       <div>Цена: {calcPrice()} $</div>
       <div className={styles.imgSmallContainer}>
-        <img src={photo} alt={"productPhoto"} />
+        <img src={photo} alt={"Фото товара"} />
       </div>
       {discount && <div className={styles.discount}>Скидка: {discount} %</div>}
       {discountEndTime && (

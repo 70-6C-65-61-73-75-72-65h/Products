@@ -111,3 +111,16 @@
     color: blue;
   }
 }
+
+.imgContainer {
+  & > img {
+    object-fit: cover;
+    max-width: 300px;
+    max-height: 150px;
+  }
+}
+.uploadIcon {
+  &:hover {
+    cursor: pointer;
+  }
+}
