@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/Products/static/css/main.c21aa629.chunk.css",
-    "main.js": "/Products/static/js/main.978ee3b4.chunk.js",
-    "main.js.map": "/Products/static/js/main.978ee3b4.chunk.js.map",
-    "runtime-main.js": "/Products/static/js/runtime-main.1117ed5f.js",
-    "runtime-main.js.map": "/Products/static/js/runtime-main.1117ed5f.js.map",
+    "main.css": "/Products/static/css/main.df3419af.chunk.css",
+    "main.js": "/Products/static/js/main.a936ae74.chunk.js",
+    "main.js.map": "/Products/static/js/main.a936ae74.chunk.js.map",
+    "runtime-main.js": "/Products/static/js/runtime-main.73374859.js",
+    "runtime-main.js.map": "/Products/static/js/runtime-main.73374859.js.map",
     "static/js/2.7d8112fb.chunk.js": "/Products/static/js/2.7d8112fb.chunk.js",
     "static/js/2.7d8112fb.chunk.js.map": "/Products/static/js/2.7d8112fb.chunk.js.map",
     "static/js/3.76c3952c.chunk.js": "/Products/static/js/3.76c3952c.chunk.js",
     "static/js/3.76c3952c.chunk.js.map": "/Products/static/js/3.76c3952c.chunk.js.map",
-    "static/js/4.45d38be3.chunk.js": "/Products/static/js/4.45d38be3.chunk.js",
-    "static/js/4.45d38be3.chunk.js.map": "/Products/static/js/4.45d38be3.chunk.js.map",
+    "static/js/4.de602cf0.chunk.js": "/Products/static/js/4.de602cf0.chunk.js",
+    "static/js/4.de602cf0.chunk.js.map": "/Products/static/js/4.de602cf0.chunk.js.map",
     "static/js/5.44de7dec.chunk.js": "/Products/static/js/5.44de7dec.chunk.js",
     "static/js/5.44de7dec.chunk.js.map": "/Products/static/js/5.44de7dec.chunk.js.map",
     "index.html": "/Products/index.html",
-    "static/css/main.c21aa629.chunk.css.map": "/Products/static/css/main.c21aa629.chunk.css.map",
+    "static/css/main.df3419af.chunk.css.map": "/Products/static/css/main.df3419af.chunk.css.map",
     "static/js/2.7d8112fb.chunk.js.LICENSE.txt": "/Products/static/js/2.7d8112fb.chunk.js.LICENSE.txt",
     "static/media/Upload-icon.0ffb4073.png": "/Products/static/media/Upload-icon.0ffb4073.png",
     "static/media/Product.module.scss": "/Products/static/media/bg0.67c9be7e.jpg",
@@ -22,9 +22,9 @@
     "static/media/preloader1.81da48ab.gif": "/Products/static/media/preloader1.81da48ab.gif"
   },
   "entrypoints": [
-    "static/js/runtime-main.1117ed5f.js",
+    "static/js/runtime-main.73374859.js",
     "static/js/2.7d8112fb.chunk.js",
-    "static/css/main.c21aa629.chunk.css",
-    "static/js/main.978ee3b4.chunk.js"
+    "static/css/main.df3419af.chunk.css",
+    "static/js/main.a936ae74.chunk.js"
   ]
 }
