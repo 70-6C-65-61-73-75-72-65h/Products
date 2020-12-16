@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 const Navbar = (props) => {
   const [isOpen, setOpen] = useState(false);
-
+  const changeOpen = () => setOpen((open) => !open);
   return (
     <>
       <nav className={s.nav}>
@@ -16,7 +16,7 @@ const Navbar = (props) => {
         </div>
 
         {isOpen && (
-          <nav className={s.navMenu}>
+          <nav className={s.navMenu} onBlur={changeOpen}>
             <div className={s.item}>
               <NavLink to="/catalog" activeClassName={s.activeLink}>
                 Каталог товаров

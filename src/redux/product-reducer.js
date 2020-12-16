@@ -290,6 +290,7 @@ export const updateProduct = (productKey, newData) => async (
       newData.photo = photo;
       newData.photo = localPhoto;
     }
+    // if(newData.discount newData.discountEndTime;)
     await ProductDataService.update(productKey, {
       ...newData,
     });

@@ -29,7 +29,7 @@ import { getStringDate } from "../../utils/utils";
 
 const UpdateProductForm = (props) => {
   const [productState, setPS] = useState(
-    Object.values(props.product).reduce(
+    Object.keys(props.product).reduce(
       (acum, val) => ((acum[val] = false), acum),
       {}
     )
@@ -37,7 +37,11 @@ const UpdateProductForm = (props) => {
   const { handleSubmit, pristine, reset, submitting, error, product } = props;
 
   const activate = (id) => {
-    setPS({ ...productState, [id]: true });
+    if (id === fieldsNames.discountEndTime) {
+      setPS({ ...productState, [fieldsNames.discount]: true, [id]: true });
+    } else {
+      setPS({ ...productState, [id]: true });
+    }
   };
 
   // if new data were passed -> it will become as input fields
@@ -53,7 +57,11 @@ const UpdateProductForm = (props) => {
       setSetled((dict) => ({ ...dict, [id]: true }));
       setNewProductR.current = void 0;
     } else {
-      setPS({ ...productState, [id]: false });
+      if (
+        !(fieldsNames.discountEndTime === id || fieldsNames.discount === id)
+      ) {
+        setPS({ ...productState, [id]: false });
+      }
     }
   }
 
@@ -153,6 +161,7 @@ const UpdateProductForm = (props) => {
       {createUpdateField(fieldsNames.price, pricelabel, Input, [
         acceptablePrice,
       ])}
+
       {createUpdateField(fieldsNames.discount, disclabel, Input, [
         acceptableDiscount,
       ])}
@@ -163,11 +172,12 @@ const UpdateProductForm = (props) => {
         [acceptableDiscountEndDate],
         {
           type: "date",
-          min: minDate,
+          // min: minDate,
           // lastDateValue: lastDate,
         },
         true
       )}
+
       {error && <div className={styles.formSummaryError}>{error}</div>}
       <div className="">
         <button type="submit" disabled={pristine || submitting}>

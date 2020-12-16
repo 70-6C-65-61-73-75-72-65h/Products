@@ -58,11 +58,13 @@ export const validate = (values) => {
   const errors = {};
   if (values.discount) {
     if (!values.discountEndTime) {
-      errors.discountEndTime = "Обязательное поле!";
+      // || values.discountEndTime === "..."
+      errors.discountEndTime = "Required"; //Обязательное поле!
     }
   } else if (values.discountEndTime) {
     if (!values.discount) {
-      errors.discount = "Обязательное поле!";
+      //  || values.discount === "..."
+      errors.discount = "Required";
     }
   }
   return errors;

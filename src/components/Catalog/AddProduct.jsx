@@ -140,7 +140,7 @@ const AddProduct = ({ isFetching, ...props }) => {
         <h1 className={productStyles.productOperationHeader}>Новый товар</h1>
         <div
           className={productStyles.productAdded}
-          style={added ? { color: colorAdded[currentCA] } : {}}
+          style={added ? { color: colorAdded[currentCA] } : { opacity: 0 }}
         >
           {added && showAddingText[currentCA]}
         </div>

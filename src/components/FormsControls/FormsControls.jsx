@@ -40,18 +40,17 @@ export const TextArea = (props) => {
 
 export function Input(props) {
   const { input, meta, child, ...restProps } = props;
-
   // Для установления последнего выбранного значения даты окончания скидки
   // и отмены значения по умолчанию если props.input.value не пустое
-  const newRP = !props.input.value
-    ? props.lastDateValue
-      ? { ...restProps, value: props.lastDateValue }
-      : restProps
-    : restProps;
+  // const newRP = !props.input.value
+  //   ? props.lastDateValue
+  //     ? { ...restProps, value: props.lastDateValue }
+  //     : restProps
+  //   : restProps;
 
   return (
     <FormControl {...props}>
-      <input {...input} ref={props.refa} {...newRP} />
+      <input {...input} ref={props.refa} {...restProps} />
     </FormControl>
   );
 }

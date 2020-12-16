@@ -94,6 +94,7 @@ a {
 .imgMiddleContainer {
   & > img {
     object-fit: cover;
+    max-width: 400px;
     max-height: 400px;
   }
 }
