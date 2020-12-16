@@ -1,4 +1,3 @@
-// import ProductDataService from "../firebase-service/product-service";
 import firebase from "../firebase-service/firebase";
 import { stopSubmit } from "redux-form";
 

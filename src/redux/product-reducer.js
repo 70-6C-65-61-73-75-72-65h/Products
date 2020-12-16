@@ -2,31 +2,17 @@ import ProductDataService from "../firebase-service/product-service";
 import { stopSubmit, reset } from "redux-form";
 
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
-//catalog paginative -- get
 const SET_PRODUCTS = "SET_PRODUCTS";
 const SELECT_PRODUCT = "SELECT_PRODUCT";
-// put
 const UPDATE_PRODUCT = "UPDATE_PRODUCT";
-// post
-// const ADD_PRODUCT = "ADD_PRODUCT";
-// delete
 const DELETE_PRODUCT = "DELETE_PRODUCT";
-
 const SET_LOADED_IMAGE_LINK = "SET_LOADED_IMAGE_LINK";
-
-// const SET_UPDATED = "SET_UPDATED";
-// const SET_ADDED = "SET_ADDED";
 
 let initialState = {
   products: [],
-  // pageSize: 5,
-  // currentPage: 1,
   isFetching: true,
   selectedProduct: null,
   loadedImageLink: null, // will be an array global//local urls
-  // selectedProductKey:null,
-  // updated: null, // msgs
-  // added: null, // msgs
 };
 
 const productReducer = (state = initialState, action) => {
@@ -34,21 +20,12 @@ const productReducer = (state = initialState, action) => {
     case SET_PRODUCTS: {
       return { ...state, products: action.products };
     }
-    // case SET_UPDATED: {
-    //   return { ...state, updated: action.updated };
-    // }
-    // case SET_ADDED: {
-    //   return { ...state, added: action.added };
-    // }
     case SELECT_PRODUCT: {
       return { ...state, selectedProduct: action.product };
     }
     case SET_LOADED_IMAGE_LINK: {
       return { ...state, loadedImageLink: action.link };
     }
-    // case ADD_PRODUCT: {
-    //   return { ...state, products: [action.product, ...action.products] };
-    // }
     case UPDATE_PRODUCT: {
       return {
         ...state,
@@ -90,47 +67,6 @@ export const selectProduct = (product) => ({
   product,
 });
 
-// export const setAdded = (added) => ({
-//   type: SET_ADDED,
-//   added,
-// });
-// export const setUpdated = (updated) => ({
-//   type: SET_UPDATED,
-//   updated,
-// });
-
-// const unpackProducts = (items) => async (dispatch) => {
-//   console.log(items);
-//   let products = [];
-
-//   items.forEach((item) => {
-//     let key = item.key;
-//     let data = item.val();
-//     products.push({
-//       key: key,
-//       photo: data.photo,
-//       description: data.description,
-//       name: data.name,
-//       price: data.price,
-//       discount: data.discount,
-//       discountEndTime: data.discountEndTime,
-//     });
-//   });
-
-//   dispatch(setProducts(products));
-// };
-
-// const subMeth = function (dispatch) {
-//   return function (items) {
-//     dispatch(unpackProducts(items));
-//   };
-// };
-
-// export const setLoadedImageLink = (link) => ({
-//   type: SET_LOADED_IMAGE_LINK,
-//   link,
-// });
-
 export const loadImage = async (file) => {
   let imageExists = await ProductDataService.isFileExists(file.name);
   let fileName = file.name;
@@ -139,22 +75,12 @@ export const loadImage = async (file) => {
     let timestamp = +new Date();
     fileName = `${timestamp}-${fileName}`;
   }
-  console.log(fileName);
   let link = await Promise.all([ProductDataService.loadFile(file, fileName)]);
-  console.log("loadImage /// link");
-  console.log(link);
   return link[0];
-  // await Promise.all([ProductDataService.loadFile(file, fileName)]).then(
-  //   (link) => {
-  //     // dispatch(setLoadedImageLink(link[0]));
-  //     resolve(link[0]);
-  //   }
-  // );
 };
 
 export const getProducts = () => async (dispatch) => {
   dispatch(toggleIsFetching(true));
-  // const dispsubMeth = subMeth(dispatch);
   try {
     await ProductDataService.getAll().once("value", (snap) => {
       let products = [];
@@ -177,7 +103,6 @@ export const getProducts = () => async (dispatch) => {
       products.reverse();
       dispatch(setProducts(products));
     });
-    // console.log(response);
   } catch (err) {
     console.log(err.message);
     console.log(err.code);
@@ -185,24 +110,6 @@ export const getProducts = () => async (dispatch) => {
 
   dispatch(toggleIsFetching(false));
 };
-// export const getProducts = (startPage = 1, numberOnPage = 5) => async (
-//   dispatch
-// ) => {
-//   dispatch(toggleIsFetching(true));
-
-//   try {
-//     let response = await ProductDataService.getPaginative(
-//       startPage,
-//       numberOnPage
-//     ).on("value", (items) => dispatch(unpackProducts(items)));
-//     console.log(response);
-//   } catch (err) {
-//     console.log(err.message);
-//     console.log(err.code);
-//   }
-
-//   dispatch(toggleIsFetching(false));
-// };
 
 export const uProduct = (productKey, newData) => ({
   type: UPDATE_PRODUCT,
@@ -215,14 +122,7 @@ export const dProduct = (productKey) => ({
   productKey,
 });
 
-// export const addProduct = (product) => ({
-//   type: ADD_PRODUCT,
-//   product,
-// });
-
-// TODO to hooks ?????
 export const deleteProduct = (productKey) => async (dispatch) => {
-  // FireBase
   dispatch(toggleIsFetching(true));
   try {
     await ProductDataService.get(productKey).once("value", async (snap) => {
@@ -239,13 +139,9 @@ export const deleteProduct = (productKey) => async (dispatch) => {
 };
 
 export const getProduct = (productKey) => async (dispatch) => {
-  // FireBase
   dispatch(toggleIsFetching(true));
   try {
     await ProductDataService.get(productKey).once("value", (snap) => {
-      console.log(snap.val());
-      // console.log(snap);
-      console.log(productKey);
       dispatch(selectProduct({ ...snap.val(), key: productKey }));
       dispatch(toggleIsFetching(false));
     });
@@ -257,10 +153,8 @@ export const getProduct = (productKey) => async (dispatch) => {
 };
 
 export const addProduct = (product) => async (dispatch) => {
-  // FireBase
   dispatch(toggleIsFetching(true));
   try {
-    // result to get product key ????
     const [photo, localPhoto] = await loadImage(product.photo);
     await ProductDataService.create({
       ...product,
@@ -276,11 +170,7 @@ export const addProduct = (product) => async (dispatch) => {
   dispatch(toggleIsFetching(false));
 };
 
-// newData = {}
-export const updateProduct = (productKey, newData) => async (
-  // FireBase
-  dispatch
-) => {
+export const updateProduct = (productKey, newData) => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   try {
     let photo, localPhoto;
@@ -290,7 +180,6 @@ export const updateProduct = (productKey, newData) => async (
       newData.photo = photo;
       newData.photo = localPhoto;
     }
-    // if(newData.discount newData.discountEndTime;)
     await ProductDataService.update(productKey, {
       ...newData,
     });

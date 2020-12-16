@@ -59,7 +59,6 @@ const App = React.memo((props) => {
   );
 });
 
-// export default withRouter(App);
 const mapStateToProps = (state) => ({
   initialized: state.app.initialized,
 });

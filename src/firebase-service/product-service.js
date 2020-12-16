@@ -1,16 +1,8 @@
 import firebase from "./firebase";
-// console.log(firebase);
 const db = firebase.database().ref("/products");
 const storage = firebase.storage().ref("/images");
 
 class ProductDataService {
-  // getImage (image) {
-  //   storage.child(`${image}.png`).getDownloadURL().then((url) => {
-  //     this.state[image] = url
-  //     this.setState(this.state)
-  //   })
-  // }
-
   isFileExists(fileName) {
     return new Promise((resolve) => {
       storage
@@ -57,26 +49,14 @@ class ProductDataService {
         resolve(res);
       });
     });
-    // return newImageRef; // name // fullPath
   }
   getAll() {
-    // console.log(db.databease);
-    // console.log(db.databease());
     return db;
   }
 
   get(key) {
     return db.child(key);
   }
-
-  // getPaginative(start, number) {
-  //   // or  by timestamp date
-  //   return db.orderByChild("id").startAt(start).limitToFirst(number);
-  //   // return db
-  //   //   .orderByChild("id")
-  //   //   .startAt((start - 1) * number + 1) //start position 1 if page 1; (ps=5)// 6 if 2
-  //   //   .limitToFirst(number);
-  // }
 
   create(product) {
     return db.push(product);

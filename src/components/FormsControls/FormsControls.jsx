@@ -40,14 +40,6 @@ export const TextArea = (props) => {
 
 export function Input(props) {
   const { input, meta, child, ...restProps } = props;
-  // Для установления последнего выбранного значения даты окончания скидки
-  // и отмены значения по умолчанию если props.input.value не пустое
-  // const newRP = !props.input.value
-  //   ? props.lastDateValue
-  //     ? { ...restProps, value: props.lastDateValue }
-  //     : restProps
-  //   : restProps;
-
   return (
     <FormControl {...props}>
       <input {...input} ref={props.refa} {...restProps} />
@@ -85,14 +77,7 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export function ImageField({
-  // mimeType = "image/jpeg, image/png",
-  // maxWidth = 4000,
-  // minHeight = 200,
-  // minWidth = 200,
-  // maxHeight = 4000,
-  ...props
-}) {
+export function ImageField({ ...props }) {
   const previewRef = useRef(null);
 
   const prevValue = usePrevious(props.meta.pristine);

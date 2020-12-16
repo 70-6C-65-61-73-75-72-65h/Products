@@ -5,8 +5,6 @@ import authReducer from "./auth-reducer";
 import productReducer from "./product-reducer";
 import appReducer from "./app-reducer";
 
-// import
-
 const reducers = combineReducers({
   form: formReducer,
   app: appReducer,
