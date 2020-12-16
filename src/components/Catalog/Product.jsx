@@ -22,6 +22,7 @@ const Product = ({
     }
   };
 
+  const isDiscountActive = () => discountEndTime > +new Date();
   const calcPrice = () => {
     let newPrice = +price;
     if (discount) {
@@ -39,12 +40,12 @@ const Product = ({
       <div className="imgSmallContainer">
         <img src={photo} alt={"Фото товара"} />
       </div>
-      {discount ? (
+      {isDiscountActive() ? (
         <div className={`${styles.discount}`}>Скидка: {discount} %</div>
       ) : (
         <div className={`${styles.discount} ${styles.empty}`}></div>
       )}
-      {discountEndTime ? (
+      {isDiscountActive() ? (
         <div className={`${styles.discount}`}>
           До конца акции: {calcDET(discountEndTime)}
         </div>

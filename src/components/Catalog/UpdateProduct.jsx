@@ -120,6 +120,9 @@ const UpdateProductForm = (props) => {
 
   const minDate = getStringDate();
   const lastDate = getStringDate(product.discountEndTime);
+
+  const isDiscountActive = () => product.discountEndTime > +new Date();
+
   console.log(lastDate);
   return (
     <form onSubmit={handleSubmit} className={styles.wholeForm}>
@@ -164,7 +167,7 @@ const UpdateProductForm = (props) => {
         {
           type: "date",
           min: minDate,
-          lastDateValue: lastDate,
+          lastDateValue: isDiscountActive() ? lastDate : void 0,
         },
         true
       )}
