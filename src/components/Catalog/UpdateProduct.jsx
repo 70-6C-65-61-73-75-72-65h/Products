@@ -164,7 +164,7 @@ const UpdateProductForm = (props) => {
         {
           type: "date",
           min: minDate,
-          // lastDateValue: lastDate,
+          lastDateValue: lastDate,
         },
         true
       )}
