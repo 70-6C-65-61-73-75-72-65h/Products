@@ -9,7 +9,6 @@ import { initializeApp } from "./redux/app-reducer";
 import { withSuspense } from "./components/HOCS/withSuspense";
 
 import UpdateProduct from "./components/Catalog/UpdateProduct";
-// CatalogContainer
 import SignIn from "./components/Auth/SignIn/SignIn";
 import SignUp from "./components/Auth/SignUp/SignUp";
 
@@ -17,7 +16,7 @@ import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Preloader from "./components/Preloader/Preloader";
 
-// Ленивая загрузка выполнена из соображений о том что при перезагрузки страницы теряется state переменная isAuth,
+// Ленивая загрузка выполнена из соображений о том что при перезагрузке страницы теряется state переменная isAuth,
 // и если пользователь еще не залогинен то все в порядке ибо его перенаправит на страницу
 // /signin ( так как я использую хок с перенаправлением на логин, если пользователь не авторизован ).
 // А вот если пользователь уже залогинен, то токен авторизации от firebase все еще хранится в indexedDB,

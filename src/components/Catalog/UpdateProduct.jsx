@@ -25,10 +25,8 @@ import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import Preloader from "../Preloader/Preloader";
 import withAuthRedirect from "../HOCS/withAuthRedirect";
-import { getCurrentDate } from "../../utils/utils";
+import { getStringDate } from "../../utils/utils";
 
-// can show the summary error
-// form-level validation
 const UpdateProductForm = (props) => {
   const [productState, setPS] = useState(
     Object.values(props.product).reduce(
@@ -87,8 +85,7 @@ const UpdateProductForm = (props) => {
     refa: setNewProductR,
   });
 
-  // create all fields except photo
-  const createProductField = (
+  const createUpdateField = (
     fieldName,
     label,
     component,
@@ -97,7 +94,7 @@ const UpdateProductForm = (props) => {
     specialField // date field or photo upload field
   ) => (
     <>
-      <div className={productStyles.fieldDescr}>{label}</div>
+      <div className={styles.fieldDescr}>{label}</div>
       {specialField || productState[fieldName] ? (
         createField(
           `${product[fieldName] || "..."}`,
@@ -110,28 +107,32 @@ const UpdateProductForm = (props) => {
           }
         )
       ) : (
-        <div id={fieldName} onClick={() => activate(fieldName)}>
+        <div
+          className={productStyles.hotUpdate}
+          id={fieldName}
+          onClick={() => activate(fieldName)}
+        >
           {product[fieldName] || "..."}
         </div>
       )}
     </>
   );
 
-  const minDate = getCurrentDate();
+  const minDate = getStringDate();
+  const lastDate = getStringDate(product.discountEndTime);
+  console.log(lastDate);
   return (
     <form onSubmit={handleSubmit} className={styles.wholeForm}>
-      {/* key, name, price, discount, discountEndTime, photo */}
-
-      {createProductField(fieldsNames.name, namelabel, TextArea, [
+      {createUpdateField(fieldsNames.name, namelabel, TextArea, [
         acceptableName,
       ])}
 
-      <div className={productStyles.fieldDescr}>{photolabelOld}</div>
-      <div className={productStyles.imgMiddleContainer}>
+      <div className={styles.fieldDescr}>{photolabelOld}</div>
+      <div className="imgMiddleContainer">
         <img src={product.photo} alt="Data" />
       </div>
 
-      {createProductField(
+      {createUpdateField(
         fieldsNames.photo,
         photolabel,
         ImageField,
@@ -146,21 +147,25 @@ const UpdateProductForm = (props) => {
         },
         true
       )}
-      {createProductField(fieldsNames.description, desclabel, TextArea, [
+      {createUpdateField(fieldsNames.description, desclabel, TextArea, [
         maxLength200,
       ])}
-      {createProductField(fieldsNames.price, pricelabel, Input, [
+      {createUpdateField(fieldsNames.price, pricelabel, Input, [
         acceptablePrice,
       ])}
-      {createProductField(fieldsNames.discount, disclabel, Input, [
+      {createUpdateField(fieldsNames.discount, disclabel, Input, [
         acceptableDiscount,
       ])}
-      {createProductField(
+      {createUpdateField(
         fieldsNames.discountEndTime,
         discountEndTimeabel,
         Input,
         [acceptableDiscountEndDate],
-        { type: "date", min: minDate, value: minDate },
+        {
+          type: "date",
+          min: minDate,
+          lastDateValue: lastDate,
+        },
         true
       )}
       {error && <div className={styles.formSummaryError}>{error}</div>}

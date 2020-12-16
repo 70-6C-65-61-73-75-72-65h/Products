@@ -4,36 +4,20 @@
   overflow: hidden;
 }
 
-.imgSmallContainer {
-  width: 200px;
-  height: 200px;
-  & > img {
-    object-fit: cover;
-    max-width: 200px;
-    max-height: 200px;
-  }
-}
-
-.imgMiddleContainer {
-  & > img {
-    object-fit: cover;
-    max-height: 400px;
-  }
-}
-
 .productOperationContainer,
 .productContainer {
   position: relative;
   padding-bottom: 10vh;
   display: flex;
   align-items: center;
-  // justify-content: center;
   flex-direction: column;
 }
 
-.fieldDescr {
-  font-weight: bold;
-  color: blue;
+.hotUpdate {
+  &:hover {
+    cursor: pointer;
+    color: rgb(27, 150, 10);
+  }
 }
 
 .productContainer {
@@ -44,6 +28,7 @@
   border-radius: 10px;
   border: 2px solid black;
   & > * {
+    font-size: 1vw;
     font-weight: bold;
     font-style: italic;
     color: blue;
@@ -55,10 +40,22 @@
   }
   & > .discount {
     color: red;
+    &.empty {
+      // its empty optional field so ...
+      height: 20px;
+    }
   }
 
   & > .productHeader {
+    font-size: 1.2vw;
     color: black;
+    border-bottom: 1px purple solid;
+  }
+
+  & > .imgSmallContainer {
+    border-radius: 10px;
+    border: 1px solid rgb(9, 122, 9);
+    box-shadow: 2px 2px 10px green;
   }
 
   & > .operationBlock {
@@ -68,6 +65,13 @@
     border: 1px solid rgb(15, 1, 136);
     border-radius: 10px;
     box-shadow: 6px 2px 2px black, -6px 2px 2px black;
+
+    & .delete > a {
+      color: rgb(65, 5, 57);
+      &:hover {
+        color: red;
+      }
+    }
   }
 }
 
@@ -82,9 +86,14 @@
   }
 
   & > .productAdded {
+    padding: 2px 20px 2px 20px;
+    background-color: white;
     font-size: 15px;
     font-weight: bold;
     font-style: italic;
+    border: 1px solid blue;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px blue;
   }
 }
 
@@ -94,7 +103,58 @@
   padding-bottom: 10vh;
   padding-top: 10vh;
   display: flex;
-  // align-items: left;
-  justify-content: left;
+  justify-content: center;
   flex-wrap: wrap;
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .productContainer {
+    height: 250px;
+    width: 150px;
+    margin-bottom: 5vh;
+    margin-left: 5vh;
+    border-radius: 10px;
+
+    & > * {
+      width: 110px;
+      font-size: 1.3vw;
+    }
+    & > .discount.empty {
+      height: 10px;
+    }
+    & > .productHeader {
+      font-size: 1.7vw;
+    }
+  }
+}
+
+@media (min-width: 481px) and (max-width: 591px) {
+  .productContainer {
+    & > * {
+      font-size: 1.6vw;
+    }
+    & > .productHeader {
+      font-size: 2vw;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .productContainer {
+    & > * {
+      font-size: 3vw;
+    }
+    & > .productHeader {
+      font-size: 3.6vw;
+    }
+  }
+
+  .productOperationContainer {
+    & .productOperationHeader {
+      width: 100px;
+      font-size: 15px;
+      text-shadow: none;
+      text-align: center;
+    }
+  }
 }

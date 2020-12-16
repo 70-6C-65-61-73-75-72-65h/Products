@@ -80,3 +80,51 @@ a {
 .app-wrapper-content {
   background-image: url("./assets/images/bg3.jpg");
 }
+
+.imgSmallContainer {
+  width: 200px;
+  height: 200px;
+  & > img {
+    object-fit: cover;
+    max-width: 200px;
+    max-height: 200px;
+  }
+}
+
+.imgMiddleContainer {
+  & > img {
+    object-fit: cover;
+    max-height: 400px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .imgSmallContainer {
+    height: 100%;
+    & > img {
+      object-fit: cover;
+      max-width: 100px;
+      max-height: 100px;
+    }
+  }
+
+  .imgMiddleContainer {
+    height: 100%;
+    & > img {
+      object-fit: cover;
+      max-width: 300px;
+      max-height: 300px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .imgMiddleContainer {
+    height: 100%;
+    & > img {
+      object-fit: cover;
+      max-width: 200px;
+      max-height: 200px;
+    }
+  }
+}

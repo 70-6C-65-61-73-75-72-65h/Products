@@ -174,7 +174,7 @@ export const getProducts = () => async (dispatch) => {
           discountEndTime: data.discountEndTime,
         });
       }
-
+      products.reverse();
       dispatch(setProducts(products));
     });
     // console.log(response);

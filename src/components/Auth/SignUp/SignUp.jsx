@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { reduxForm } from "redux-form";
 import { Input, createField } from "../../FormsControls/FormsControls";
 import { requiredField } from "../../FormsControls/validators";
 import { connect } from "react-redux";
 import { signup } from "../../../redux/auth-reducer";
-import { Redirect } from "react-router-dom";
 import styles from "../../FormsControls/FormsControls.module.scss";
 
-// can show the summary error
-// form-level validation
 const SignUpForm = (props) => {
   const { handleSubmit, pristine, reset, submitting, error } = props;
   return (
@@ -35,11 +32,9 @@ const SignUpForm = (props) => {
 const SignUpReduxForm = reduxForm({ form: "signup" })(SignUpForm);
 
 const SignUp = (props) => {
-  // const [shouldRedirect, setSR] = useState(false)
   const onSubmit = (formData) => {
     props.signup(formData.email, formData.password);
   };
-  // if (props.isAuth) return <Redirect to="/signin" />;
 
   return (
     <>

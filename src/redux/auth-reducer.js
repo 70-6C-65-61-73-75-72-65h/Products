@@ -26,19 +26,6 @@ export const setAuthUserData = (userId, email, isAuth) => ({
   payload: { userId, email, isAuth },
 });
 
-// const checkIfFireBaseError = (response) => {
-//   if (!("code" in response && "message" in response)) {
-//     // => !errror
-//     console.log("success");
-//     return true;
-//   } else {
-//     console.log("error");
-//     console.log(response.code);
-//     console.log(response.message);
-//     return false;
-//   }
-// };
-
 export const checkIfLogin = () => async (dispatch) => {
   return new Promise((resolve) => {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -64,7 +51,6 @@ export const signup = (email, password) => async (dispatch) => {
 };
 
 export const signin = (email, password) => async (dispatch) => {
-  // maybe key ??
   try {
     let response = await firebase
       .auth()

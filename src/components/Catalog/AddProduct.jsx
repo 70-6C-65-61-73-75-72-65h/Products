@@ -25,38 +25,33 @@ import withAuthRedirect from "../HOCS/withAuthRedirect";
 import { compose } from "redux";
 
 import productStyles from "./Product.module.scss";
-import { getCurrentDate } from "../../utils/utils";
+import { getStringDate } from "../../utils/utils";
 
-// can show the summary error
-// form-level validation
 const addProductForm = (props) => {
-  const {
-    handleSubmit,
-    pristine,
-    reset,
-    submitting,
-    error,
-    // productLink,
-  } = props;
+  const { handleSubmit, pristine, reset, submitting, error } = props;
 
-  const minDate = getCurrentDate();
+  const fieldDescr = (descName) => (
+    <div className={styles.fieldDescr}>{descName}</div>
+  );
+
+  const minDate = getStringDate();
   return (
     <form onSubmit={handleSubmit} className={styles.wholeForm}>
-      <div className={productStyles.fieldDescr}>Наименование</div>
+      {fieldDescr("Наименование")}
       {createField("Наименование товара", "name", TextArea, [
         requiredField,
         acceptableName,
       ])}
-      <div className={productStyles.fieldDescr}>Описание товара</div>
+      {fieldDescr("Описание товара")}
       {createField("Описание товара", "description", TextArea, [maxLength200])}
-      <div className={productStyles.fieldDescr}>Цена товара</div>
+      {fieldDescr("Цена товара")}
       {createField("Цена товара", "price", Input, [
         requiredField,
         acceptablePrice,
       ])}
-      <div className={productStyles.fieldDescr}>Скидка</div>
+      {fieldDescr("Скидка")}
       {createField("Скидка", "discount", Input, [acceptableDiscount])}
-      <div className={productStyles.fieldDescr}>Дата окончания скидки</div>
+      {fieldDescr("Дата окончания скидки")}
       {createField(
         "Дата окончания акции",
         "discountEndTime",
@@ -64,7 +59,6 @@ const addProductForm = (props) => {
         [acceptableDiscountEndDate],
         { type: "date", min: minDate, value: minDate }
       )}
-
       {createField(
         "Загрузите фото ...",
         "photo",
@@ -79,7 +73,6 @@ const addProductForm = (props) => {
           alt: "Фото товара",
         }
       )}
-
       {error && <div className={styles.formSummaryError}>{error}</div>}
       <div className="">
         <button type="submit" disabled={pristine || submitting}>

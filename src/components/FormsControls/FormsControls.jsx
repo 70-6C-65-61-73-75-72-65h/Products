@@ -3,14 +3,13 @@ import styles from "./FormsControls.module.scss";
 import { Field } from "redux-form";
 import PropTypes from "prop-types";
 import uploadIcon from "../../assets/images/Upload-icon.png";
-// how to show that we dont pass the field validation before submitting ( or after )
+
 // field-level validation
 const FormControl = ({
   input,
   meta: { touched, error, warning },
   children,
 }) => {
-  // children = <input {...input} {...restProps} /> or children = <input {...input} {...restProps} />
   const hasError = touched && error;
   const hasWarn = touched && warning;
   return (
@@ -26,31 +25,33 @@ const FormControl = ({
       {children}
       {(hasError && <span>{error}</span>) ||
         (hasWarn && <span>{warning}</span>)}
-      {/* </div> */}
     </div>
   );
 };
 
 export const TextArea = (props) => {
   const { input, meta, child, ...restProps } = props;
-  // console.log(restProps.onCTRLEnt);
   return (
     <FormControl {...props}>
-      <textarea
-        {...input}
-        {...restProps}
-        // onKeyUp={restProps.onCTRLEnt}
-        ref={props.refa}
-      />
+      <textarea {...input} {...restProps} ref={props.refa} />
     </FormControl>
   );
 };
 
 export function Input(props) {
   const { input, meta, child, ...restProps } = props;
+
+  // Для установления последнего выбранного значения даты окончания скидки
+  // и отмены значения по умолчанию если props.input.value не пустое
+  const newRP = !props.input.value
+    ? props.lastDateValue
+      ? { ...restProps, value: props.lastDateValue }
+      : restProps
+    : restProps;
+
   return (
     <FormControl {...props}>
-      <input {...input} {...restProps} ref={props.refa} />
+      <input {...input} ref={props.refa} {...newRP} />
     </FormControl>
   );
 }
@@ -60,7 +61,6 @@ export const createField = (
   name,
   component,
   validators,
-  // specFuncObj, // {functionName: function} // {onBlur: function}
   props = {},
   text = ""
 ) => {

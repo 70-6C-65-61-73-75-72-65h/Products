@@ -15,15 +15,9 @@
     display: block;
     position: relative;
     z-index: 3;
-    // top: 40%;
     left: 0%;
     color: red;
-    // background: linear-gradient(
-    //   45deg,
-    //   rgb(8, 8, 72) 80%,
-    //   rgb(11, 11, 132) 90%,
-    //   rgb(10, 10, 171) 95%
-    // );
+    word-wrap: break-word;
 
     visibility: hidden;
   }
@@ -38,12 +32,9 @@
   }
 }
 
-// all .redux_form wil have now grid-area: form;  and grid
 .redux_form {
   overflow-y: scroll;
   overflow-x: hidden;
-
-  grid-area: redux_form;
 
   input,
   textarea {
@@ -60,7 +51,6 @@
 }
 
 .formButtons {
-  grid-area: formButtons;
   button {
     font-size: 2vh;
   }
@@ -68,7 +58,6 @@
 
 // make like pop up?
 .formSummaryError {
-  grid-area: formSummaryError;
   border: solid red 0.2vh;
   padding: 0.5vh;
   width: 30vw;
@@ -84,21 +73,30 @@
 }
 
 .wholeForm {
+  margin: 0 100px 0 100px;
   background-color: white;
   border: 2px solid black;
   border-radius: 10px;
-  position: relative;
-  width: 40vw;
+  // position: relative;
+  width: 400px;
+  // min-width: 400px;
+  // max-width: 1000px;
   // left: calc(50% - 20vw);
   display: flex;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
   flex-direction: column;
 
   & > * {
-    padding-top: 10px;
+    padding: 10px 10px 0px 10px;
+    text-align: center;
   }
   padding-bottom: 10px;
+}
+
+.fieldDescr {
+  font-weight: bold;
+  color: blue;
 }
 
 .operationContainer {
@@ -116,12 +114,29 @@
 .imgContainer {
   & > img {
     object-fit: cover;
-    max-width: 300px;
-    max-height: 150px;
+    max-width: 100px;
+    max-height: 100px;
   }
 }
 .uploadIcon {
   &:hover {
     cursor: pointer;
+  }
+}
+
+// @media (min-width: 481px) and (max-width: 591px) {
+//   .productContainer {
+//     & > * {
+//       font-size: 1.6vw;
+//     }
+//     & > .productHeader {
+//       font-size: 2vw;
+//     }
+//   }
+// }
+
+@media (max-width: 480px) {
+  .wholeForm {
+    width: 200px;
   }
 }

@@ -14,7 +14,7 @@ const Product = ({
   isFetching,
 }) => {
   const calcDET = (det) => {
-    let days = new Date(det - new Date()).getDate();
+    let days = Math.floor((det - new Date()) / 1000 / 60 / 60 / 24);
     if ((days - 1) % 10 === 0 && !((days - 11) % 100 === 0)) {
       return `${days} сутки`;
     } else {
@@ -36,20 +36,26 @@ const Product = ({
       <h3 className={styles.productHeader}> {name}</h3>
       <div> Описание: {description || "..."}</div>
       <div>Цена: {calcPrice()} $</div>
-      <div className={styles.imgSmallContainer}>
+      <div className="imgSmallContainer">
         <img src={photo} alt={"Фото товара"} />
       </div>
-      {discount && <div className={styles.discount}>Скидка: {discount} %</div>}
-      {discountEndTime && (
-        <div className={styles.discount}>
+      {discount ? (
+        <div className={`${styles.discount}`}>Скидка: {discount} %</div>
+      ) : (
+        <div className={`${styles.discount} ${styles.empty}`}></div>
+      )}
+      {discountEndTime ? (
+        <div className={`${styles.discount}`}>
           До конца акции: {calcDET(discountEndTime)}
         </div>
+      ) : (
+        <div className={`${styles.discount} ${styles.empty}`}></div>
       )}
       <div className={styles.operationBlock}>
         <div>
           <NavLink to={"/catalog/" + productKey}>Редактировать</NavLink>
         </div>
-        <div>
+        <div className={styles.delete}>
           <NavLink to={"/catalog/"} onClick={() => deleteProduct(productKey)}>
             Удалить
           </NavLink>
