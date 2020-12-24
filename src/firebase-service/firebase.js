@@ -3,14 +3,14 @@ import "firebase/database";
 import "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB232ly-YH5BqFVivK6cZwpFCem-6F0Csk",
-  authDomain: "testproj-30b12.firebaseapp.com",
-  databaseURL: "https://testproj-30b12-default-rtdb.firebaseio.com",
-  projectId: "testproj-30b12",
-  storageBucket: "testproj-30b12.appspot.com",
-  messagingSenderId: "288859036226",
-  appId: "1:288859036226:web:2256619dd7e9892dac2bdb",
-  measurementId: "G-6BVLDP7VT0",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 const persistance = firebase.auth.Auth.Persistence.LOCAL;
 const app = !firebase.apps.length
